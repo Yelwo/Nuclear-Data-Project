@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+{% block content %}
+  <h1>Name: {{ isotope.name }}</h1>
+
+  <p><strong>Atomic number:</strong> {{ isotope.z_number }}</p>
+  <p><strong>Mass number:</strong> {{ isotope.a_number }}</p>
+  <p><strong>Natural abundance:</strong> {{ isotope.natural_abund }}</p>
+  <p><strong>Binding energy:</strong> {{ isotope.binding_energy }} MeV</p>
+  <p><strong>Atomic mass:</strong> {{ isotope.atomic_mass }} u</p>
+  <p><strong>Type:</strong> {{ isotope.iso_type }}</p>
+  <p><strong>Nuclear size:</strong> {{ isotope.nuc_size }} cm</p>
+  {% if isotope.iso_type == 'U' %}
+    <p><strong>Child:</strong> <a href="{{ isotope.child.get_absolute_url }}">{{ isotope.child.name }}</a></p>
+  {% endif %}
+  <p><strong>Germ:</strong> {{ isotope.germ_view }}</p>
+  <p><strong>Garland occupation number:</strong> {{ isotope.number_of_monads }}</p>
+  <p><strong>Nuclear Structure Table</strong></p>
+
+<div class = "container">
+  <div class = "col-md-2">
+    {% render_table isotope.nuc_structure_table %}
+  </div>
+  <div class = "col-md-2">
+    {% render_table isotope.nuc_shell_sizes_table %}
+  </div>
+  <div class = "col-md-2">
+    {% render_table isotope.nuc_shell_binding_energy_table %}
+  </div>
+  <div class = "col-md-2">
+    {% render_table isotope.nuc_shell_dipole_moment_table %}
+  </div>
+</div>
+
+
+
+
+{% endblock %}

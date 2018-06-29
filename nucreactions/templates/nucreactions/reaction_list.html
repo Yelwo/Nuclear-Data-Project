@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<h1>Reaction List</h1>
+
+    {% if reaction_list %}
+    <ul>
+        {% for reaction in reaction_list %}
+        <li>
+            <a href="{{ reaction.get_absolute_url }}">{{ reaction }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no reactions in the library</p>
+    {% endif %}
+
+
+{% endblock %}

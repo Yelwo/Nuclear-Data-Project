@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<h1>Isotope List</h1>
+
+    {% if isotope_list %}
+    <ul>
+        {% for isotope in isotope_list %}
+        <li>
+            <a href="{{ isotope.get_absolute_url }}">{{ isotope.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>There are no isotopes in the library</p>
+    {% endif %}
+
+
+{% endblock %}
+
