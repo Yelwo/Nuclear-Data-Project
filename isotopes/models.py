@@ -12,9 +12,11 @@ C = 299792458 # m/s
 E_SQUARED = 1.4396
 E = 4.80296
 
+
 # ---------- Add two tuples
 def myAdd(x,y):
     return tuple(map(sum,zip(x,y)))
+
 
 # ---------- Find garland occupation number
 def find_number_of_monads(first_shell_size):
@@ -22,11 +24,11 @@ def find_number_of_monads(first_shell_size):
     result = first_shell_size
     while result < 1:
         result = i * first_shell_size
-        if(result < 1):
+        if result < 1:
             i += 2
-    if(result - 1 > 1 - (first_shell_size*(i-2))):
+    if result - 1 > 1 - (first_shell_size*(i-2)):
         result = first_shell_size*(i-2)
-    return (result,i)
+    return result, i
 
 # ---------- Isotope data tables
 
@@ -84,15 +86,15 @@ class Isotope(models.Model):
     # ---------- Calculate single step of decay chain
     def decay_mode(self):
         x = self.child
-        if (x.z_number < self.z_number):
-            if (x.a_number == self.a_number - 4):
+        if x.z_number < self.z_number:
+            if x.a_number == self.a_number - 4:
                 return (0, 0)
             else:
-                return (self.z_number - x.z_number, 0)
-        elif (x.z_number > self.z_number):
-            return (0, x.z_number - self.z_number)
+                return self.z_number - x.z_number, 0
+        elif x.z_number > self.z_number:
+            return 0, x.z_number - self.z_number
         else:
-            return (0, 1)
+            return 0, 1
 
     # ---------- Calculate germ for both, stable and unstable isotopes
     def _get_germ(self):
@@ -314,7 +316,7 @@ class Isotope(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('isotopes:isotope-detail', args = [str(self.id)])
+        return reverse('isotopes:isotope-detail', args=[str(self.id)])
 
     class Meta:
         ordering = ['z_number','a_number']

@@ -1,19 +1,19 @@
 
-#---------- Imports
+# ---------- Imports
 from pyne import data
 from pyne import nucname
 
 
-#---------- Add two tuples
+# ---------- Add two tuples
 def myAdd(x,y):
     return tuple(map(sum,zip(x,y)))
 
-#---------- Constants
+# ---------- Constants
 mass_unit = 931.4940954
 proton_mass = 1.00727647
 neutron_mass = 1.00866490
 
-#---------- List of isotope names
+# ---------- List of isotope names
 isotopes = []
 
 for i in range(1,115):
@@ -23,7 +23,7 @@ for i in range(1,115):
         except (RuntimeError):
             pass
 
-#---------- Calculate binding energy of isotope
+# ---------- Calculate binding energy of isotope
 def calc_binding_energy(isotope):
     z = nucname.znum(isotope)
     a = nucname.anum(isotope)
@@ -31,7 +31,7 @@ def calc_binding_energy(isotope):
     return bind
 
 
-#---------- Find isotope by Z number
+# ---------- Find isotope by Z number
 def match_z_isotope(isotope,z):
     if(nucname.znum(isotope) == z):
         return True
@@ -43,14 +43,15 @@ def iso(isotopes,z):
     result = [isotope for isotope in isotopes if match_z_isotope(isotope,z)]
     return result
 
-#---------- Filter existing isotopes
+
+# ---------- Filter existing isotopes
 isotopes_up = list(filter(lambda isotope: (len(data.decay_children(isotope))>0 or
                           data.natural_abund(isotope)>0),isotopes))
 
 
-#---------- Get dict of children
+# ---------- Get dict of children
 def list_branch_ratio(isotope):
-    list_branch = list(map(lambda x: data.branch_ratio(isotope,x),list(data.decay_children(isotope))))
+    list_branch = list(map(lambda x: data.branch_ratio(isotope, x), list(data.decay_children(isotope))))
     return list_branch
 
 
@@ -134,36 +135,42 @@ class Unstable(Iso_data):
         else:
             return germ_sum
 
-#---------- Create isotope objects list
+
+# ---------- Create isotope objects list
 def set_nuc_data(isotopes_up):
     nuc_data = []
-    for isotope in isotopes_up:
-        if(data.natural_abund(isotope) > 0):
-            nuc_data.append(Stable(isotope,nucname.id(isotope),nucname.znum(isotope),nucname.anum(isotope),
-                                   data.natural_abund(isotope),calc_binding_energy(isotope),
-                                   data.atomic_mass(isotope),dit_decay_child(isotope)))
+    for iso_name in isotopes_up:
+        if data.natural_abund(iso_name) > 0:
+            nuc_data.append(Stable(iso_name,nucname.id(iso_name),nucname.znum(iso_name),nucname.anum(iso_name),
+                                   data.natural_abund(iso_name),calc_binding_energy(iso_name),
+                                   data.atomic_mass(iso_name),dit_decay_child(iso_name)))
+        elif dit_decay_child(iso_name):
+            nuc_data.append(Unstable(iso_name,nucname.id(iso_name),nucname.znum(iso_name),nucname.anum(iso_name),
+                                     data.natural_abund(iso_name),calc_binding_energy(iso_name),
+                                     data.atomic_mass(iso_name),dit_decay_child(iso_name)))
         else:
-            nuc_data.append(Unstable(isotope,nucname.id(isotope),nucname.znum(isotope),nucname.anum(isotope),
-                                   data.natural_abund(isotope),calc_binding_energy(isotope),
-                                   data.atomic_mass(isotope),dit_decay_child(isotope)))
+            print(iso_name)
             
     return nuc_data
 
+
 nuc_data = set_nuc_data(isotopes_up)
 
-#---------- Find isotope inside list, by name or id
+
+# ---------- Find isotope inside list, by name or id
 def find_iso_name(iso_name):
     for isotope in nuc_data:
-        if(isotope.name == iso_name):
+        if isotope.name == iso_name:
             return isotope
 
 
 def find_iso_id(iso_id):
     for isotope in nuc_data:
-        if(isotope.iso_id == iso_id):
+        if isotope.iso_id == iso_id:
             return isotope
 
-exec(open("./MissingData.py").read())
+
+exec(open("db_scripts/MissingData.py").read())
 
 """germs = []
 germs_size = []

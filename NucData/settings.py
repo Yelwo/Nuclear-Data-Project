@@ -86,9 +86,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'NucData',
         'USER': 'postgres',
-        'PASSWORD': 'wolwo',
+        'PASSWORD': 'qaz',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433'
     }
 }
 

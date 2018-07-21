@@ -11,19 +11,19 @@ ReactionsField.objects.all().delete()
 """
 
 reactions = data.reactions
+  
 
-def check_if_there_are_many_objects(name,object_class):
-    for element in object_class.objects.all().values_list('name',flat = 'True'):
+def check_if_there_are_many_objects(name, object_class):
+    for element in object_class.objects.all().values_list('name', flat='True'):
         m = re.fullmatch('[0-9]+' + element,name)
         if m:
-            return (element,int(re.search('[0-9]+',name)[0]))
+            return element, int(re.search('[0-9]+', name)[0])
 
-    return (name,1)
+    return name, 1
 
 
-
-def create_reactions_field(name,object_class):
-    many = check_if_there_are_many_objects(name,object_class)
+def create_reactions_field(name, object_class):
+    many = check_if_there_are_many_objects(name, object_class)
     if object_class is Isotope:
         obj, created = ReactionsField.objects.get_or_create(isotope = Isotope.objects.get(name = many[0]),
                                                             quantity = many[1])
@@ -39,11 +39,12 @@ def create_reactions_field(name,object_class):
     if created: obj.save()
     return obj
 
+
 def get_object(name):
-    if (name == None) | (name == ''):
+    if (name is None) | (name == ''):
         return None
     try:
-        return create_reactions_field(name,Isotope)
+        return create_reactions_field(name, Isotope)
 
     except Isotope.DoesNotExist:
         try:
@@ -53,7 +54,8 @@ def get_object(name):
             try:
                 return create_reactions_field(name, Radiation)
             except Radiation.DoesNotExist:
-                print('Cant find %s in data base' % (name))
+                print('Cant find %s in data base' % name)
+
 
 """
 for index,react in reactions.iterrows():
@@ -69,5 +71,5 @@ for index,react in reactions.iterrows():
                                        get_object(react['Product_One']),
                                        get_object(react['Product_Two']),
                                        get_object(react['Product_Three'])))
-
 """
+

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
+
 wrong0 = ['Li5','P44','V42','Cu68','Ni69','Co49','Br69','Rb73','Tc90','Ru94','Te127','I114','La126',
          'Ce120','Sm130','Gd134','Tb145','Dy139','Dy140','Yb150','Lu154','Lu162','W157','Ir199','Ir200',
          'Re165','Os174','Ir168','Pt185','Au180','Au174','Au176','Tl191','Tl183','Tl185','Pb193','Po217',
@@ -87,7 +88,38 @@ missing_decay.append({nucname.id('Eu139'):1.0}) # Gd139
 wrong0.append('Lu157')
 missing_decay.append({nucname.id('Tm153'):1.0}) # Lu157
 
+wrong0.append('Rh122')
+missing_decay.append({nucname.id('Pd122'):1.0}) # Rh122
 
+wrong0.append('Pd126')
+missing_decay.append({nucname.id('Ag126'):1.0}) # Pd126
+
+wrong0.append('Ce153')
+missing_decay.append({nucname.id('Pr153'):1.0}) # Ce153
+
+wrong0.append('Ce155')
+missing_decay.append({nucname.id('Pr155'):1.0}) # Ce155
+
+wrong0.append('Ce156')
+missing_decay.append({nucname.id('Pr156'):1.0}) # Ce156
+
+wrong0.append('La128')
+missing_decay.append({nucname.id('Ba128'):1.0}) # La128
+
+wrong0.append('Dy171')
+missing_decay.append({nucname.id('Ho171'):1.0}) # Dy171
+
+wrong0.append('Dy172')
+missing_decay.append({nucname.id('Ho172'):1.0}) # Dy172
+
+wrong0.append('Ho146')
+missing_decay.append({nucname.id('Dy146'):1.0}) # Ho146
+
+wrong0.append('W165')
+missing_decay.append({nucname.id('Ta165'):1.0}) # W165
+
+wrong0.append('Ra205')
+missing_decay.append({nucname.id('Fr205'):1.0}) # Ra205
 
 for isotope, decay in zip(wrong0, missing_decay):
     if(data.natural_abund(isotope) > 0):
