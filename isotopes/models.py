@@ -99,13 +99,13 @@ class Isotope(models.Model):
     # ---------- Calculate germ for both, stable and unstable isotopes
     def _get_germ(self):
         if self.iso_type == 'S':
-            if (self.binding_energy > (PROTON_MASS * MASS_UNIT)):
-                if (self.z_number % 2 == 0):
+            if self.binding_energy > (PROTON_MASS * MASS_UNIT):
+                if self.z_number % 2 == 0:
                     my_tuple = (0, 2)
                 else:
                     my_tuple = (1, 1)
             else:
-                if (self.z_number % 2 == 0):
+                if self.z_number % 2 == 0:
                     my_tuple = (0, 1)
                 else:
                     my_tuple = (1, 0)
@@ -114,12 +114,12 @@ class Isotope(models.Model):
         else:
             i = self
             decay_sum = (0, 0)
-            while (i.iso_type != 'S'):
+            while i.iso_type != 'S':
                 decay_sum = myAdd(decay_sum, i.decay_mode())
                 i = i.child
 
             germ_sum = myAdd((i.germ[0], i.germ[1]), decay_sum)
-            if ((self.z_number - germ_sum[0]) % 2 != 0):
+            if (self.z_number - germ_sum[0]) % 2 != 0:
                 my_tuple = myAdd(germ_sum, (1, 0))
             else:
                 my_tuple = germ_sum
@@ -132,13 +132,13 @@ class Isotope(models.Model):
     def _get_germ_view(self):
         germ = self.germ
         germ_view = ""
-        if(germ[1] > 0):
-            if(germ[1] == 1):
+        if germ[1] > 0:
+            if germ[1] == 1:
                 germ_view += 'n'
             else:
                 germ_view += str(germ[1]) + 'n'
-        if(germ[0] > 0):
-            if(germ[0] == 1):
+        if germ[0] > 0:
+            if germ[0] == 1:
                 germ_view += 'p'
             else:
                 germ_view += str(germ[0]) + 'p'
@@ -153,15 +153,14 @@ class Isotope(models.Model):
         protons = self.z_number - self.germ[0]
         neutrons = self.a_number - self.z_number - self.germ[1]
 
-        def display(nucleons,n_or_p):
+        def display(nucleons, n_or_p):
             if nucleons > 1: return str(nucleons) + n_or_p
             elif nucleons == 1: return n_or_p
             else: return ""
 
-        return "G(" + self.germ_view + ")" + display(neutrons,"n") + display(protons,"p")
+        return "G(" + self.germ_view + ")" + display(neutrons, "n") + display(protons, "p")
 
     germ_shell_view = property(_get_germ_shell_view)
-
 
     # ---------- Get isotope id
     def _get_iso_id(self):
@@ -180,19 +179,19 @@ class Isotope(models.Model):
     def _get_nuc_structure(self):
         protons_left = self.z_number - self.germ[0]
         neutrons_left = self.a_number - self.z_number - self.germ[1]
-        max_structure = [6,12,8,24,24,12,30,24,24,8,24,48,6,48]
+        max_structure = [6, 12, 8, 24, 24, 12, 30, 24, 24, 8, 24, 48, 6, 48]
         my_structure = []
         i = 0
 
-        if (self.germ[0] >= self.germ[1]):
+        if self.germ[0] >= self.germ[1]:
             last = 0
         else:
             last = 1
 
         while (protons_left > 0) | (neutrons_left > 0):
-            if(((last == 0) & (neutrons_left > 0)) | (protons_left == 0)):
+            if ((last == 0) & (neutrons_left > 0)) | (protons_left == 0):
                 if neutrons_left > max_structure[i]:
-                    my_structure.append((0,max_structure[i]))
+                    my_structure.append((0, max_structure[i]))
                     neutrons_left -= max_structure[i]
                     i += 1
                     last = 1
@@ -201,20 +200,19 @@ class Isotope(models.Model):
                     neutrons_left = 0
                     i += 1
                     last = 1
-            elif(last == 1 ) | (neutrons_left == 0):
+            elif (last == 1) | (neutrons_left == 0):
                 if protons_left > max_structure[i]:
-                    my_structure.append((max_structure[i],0))
+                    my_structure.append((max_structure[i], 0))
                     protons_left -= max_structure[i]
                     i += 1
                     last = 0
                 else:
-                    my_structure.append((protons_left,0))
+                    my_structure.append((protons_left, 0))
                     protons_left = 0
                     i += 1
                     last = 0
 
         return my_structure
-
 
     nuc_structure = property(_get_nuc_structure)
 
@@ -241,41 +239,42 @@ class Isotope(models.Model):
 
     # ---------- Get shell sizes
     def _get_nuc_shell_sizes(self):
-        if(self.binding_energy == 0): return []
-        A = [1,2,3,4,5,6,8,9,10,11,12,13,15,16,17]
+        A = [1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 15, 16, 17]
         my_structure = self.nuc_structure
         shell_sizes = []
-        my_sum = 0
+        my_sum = monads_number = 0
 
-        for i,shell in enumerate(my_structure):
+        for i, shell in enumerate(my_structure):
             my_sum += (shell[0] + shell[1])/math.sqrt(A[i])
 
-        for i,shell in enumerate(my_structure):
-            if(i == 0):
-                shell_sizes.append((1/2) * (E_SQUARED/self.binding_energy)* my_sum)
+        for i, shell in enumerate(my_structure):
+            if i == 0:
+                shell_sizes.append((1/2) * (E_SQUARED/self.binding_energy) * my_sum)
                 monads = find_number_of_monads(shell_sizes[0])
                 shell_sizes[0] = monads[0]
                 monads_number = monads[1]
             else:
                 shell_sizes.append(math.sqrt(A[i]) * shell_sizes[0])
 
-        return (shell_sizes,monads_number)
+        return shell_sizes, monads_number
 
     nuc_shell_sizes = property(_get_nuc_shell_sizes)
 
     def _get_number_of_monads(self):
-        monads = self.nuc_shell_sizes[1]
-        return monads
+        return self.nuc_shell_sizes[1]
 
     number_of_monads = property(_get_number_of_monads)
 
     # ---------- Create shell sizes table
     def _get_nuc_shell_sizes_table(self):
-        shell_sizes = self.nuc_shell_sizes[0]
+        if self.nuc_shell_sizes:
+            shell_sizes = self.nuc_shell_sizes[0]
+        else:
+            shell_sizes = []
         table = []
 
         for i, shell in enumerate(shell_sizes):
-            table.append({'shell_number': i + 1 , 'shell_radius' : format(shell, '.5g')})
+            table.append({'shell_number': i + 1, 'shell_radius' : format(shell, '.5g')})
 
         return NucShellSizesTable(table)
 
@@ -286,7 +285,8 @@ class Isotope(models.Model):
         shell_sizes = self.nuc_shell_sizes[0]
         table = []
         for i, shell in enumerate(shell_sizes):
-            table.append({'shell_number': i + 1, 'binding_energy': format(((1/2) * E_SQUARED * self.number_of_monads)/shell_sizes[i],'.5g')})
+            table.append({'shell_number': i + 1,
+                          'binding_energy': format(((1/2) * E_SQUARED * self.number_of_monads)/shell_sizes[i], '.5g')})
 
         return NucShellEnergyTable(table)
 
@@ -297,7 +297,7 @@ class Isotope(models.Model):
         shell_sizes = self.nuc_shell_sizes[0]
         table = []
         for i, shell in enumerate(shell_sizes):
-            table.append({'shell_number': i + 1, 'dipole_moment': format(shell*E,'.5g')})
+            table.append({'shell_number': i + 1, 'dipole_moment': format(shell*E, '.5g')})
 
         return NucShellDipoleMomentTable(table)
 
@@ -319,4 +319,4 @@ class Isotope(models.Model):
         return reverse('isotopes:isotope-detail', args=[str(self.id)])
 
     class Meta:
-        ordering = ['z_number','a_number']
+        ordering = ['z_number', 'a_number']

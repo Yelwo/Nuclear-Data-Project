@@ -48,7 +48,7 @@ def get_object(name):
 
     except Isotope.DoesNotExist:
         try:
-            return create_reactions_field(name,ElementaryParticle)
+            return create_reactions_field(name, ElementaryParticle)
 
         except ElementaryParticle.DoesNotExist:
             try:
