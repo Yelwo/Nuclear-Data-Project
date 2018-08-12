@@ -15,7 +15,8 @@ Radiation.objects.create(name = 'β-')
 Radiation.objects.create(name = 'β+')
 
 elementary_names = ['π+', 'π-', 'π0', 'K+', 'K-', 'K0', 'Σ+', 'Σ0', 'Σ-', 'Λ', 'Ω-', 'p', 'n', 'γ', 'e-']
-elementary_masses = [139.569, 139.569, 134.965, 493.707, 493.707, 497.7, 1189.37, 1192.47, 1197.35, 1115.6, 1672.2, 938.279, 939.573, 0.0, 0.511]
+elementary_masses = [139.569, 139.569, 134.965, 493.707, 493.707, 497.7, 1189.37, 1192.47, 1197.35, 1115.6, 1672.2,
+                     938.279, 939.573, 0.0, 0.511]
 
 for name, mass in zip(elementary_names,elementary_masses):
     ElementaryParticle.objects.create(name = name, mass = mass)

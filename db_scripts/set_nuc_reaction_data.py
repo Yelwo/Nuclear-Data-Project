@@ -25,14 +25,14 @@ def check_if_there_are_many_objects(name, object_class):
 def create_reactions_field(name, object_class):
     many = check_if_there_are_many_objects(name, object_class)
     if object_class is Isotope:
-        obj, created = ReactionsField.objects.get_or_create(isotope = Isotope.objects.get(name = many[0]),
-                                                            quantity = many[1])
+        obj, created = ReactionsField.objects.get_or_create(isotope=Isotope.objects.get(name=many[0]),
+                                                            quantity=many[1])
     elif object_class is ElementaryParticle:
         obj, created = ReactionsField.objects.get_or_create(elementary_particle=ElementaryParticle.objects.get(name=many[0]),
-                                                            quantity = many[1])
+                                                            quantity=many[1])
     elif object_class is Radiation:
         obj, created = ReactionsField.objects.get_or_create(radiation=Radiation.objects.get(name=many[0]),
-                                                            quantity = many[1])
+                                                            quantity=many[1])
     else:
         print('Not a valid class')
         return None
