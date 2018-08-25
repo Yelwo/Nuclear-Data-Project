@@ -8,11 +8,13 @@ from db_scripts.set_nuc_reaction_data import get_object
 
 class ReactionListView(generic.ListView):
     model = Reaction
+    paginate_by = 20
 
 
 class ReactionDetailView(generic.DetailView):
     model = Reaction
     paginate_by = 50
+
 
 @login_required
 def addreactions(request):

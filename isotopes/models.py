@@ -88,7 +88,7 @@ class Isotope(models.Model):
         x = self.child
         if x.z_number < self.z_number:
             if x.a_number == self.a_number - 4:
-                return (0, 0)
+                return 0, 0
             else:
                 return self.z_number - x.z_number, 0
         elif x.z_number > self.z_number:

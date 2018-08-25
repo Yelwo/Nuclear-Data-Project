@@ -18,6 +18,7 @@ def addisotopes(request):
 
 class IsotopeListView(generic.ListView):
     model = Isotope
+    paginate_by = 20
 
 
 class IsotopeDetailView(generic.DetailView):
