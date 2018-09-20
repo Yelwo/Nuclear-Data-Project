@@ -170,7 +170,7 @@ def find_iso_id(iso_id):
             return isotope
 
 
-exec(open("db_scripts/MissingData.py").read())
+exec(open("db_scripts/missing_data.py").read())
 
 """germs = []
 germs_size = []

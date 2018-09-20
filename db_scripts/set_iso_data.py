@@ -16,7 +16,7 @@ iso_list = []
 
 for isotope in nd.nuc_data:
     if type(isotope) is nd.Stable:
-        a = Isotope(name=isotope.name, iso_type = 'S', z_number=isotope.Z, a_number=isotope.A,
+        a = Isotope(name=isotope.name, iso_type='S', z_number=isotope.Z, a_number=isotope.A,
                     natural_abund=isotope.natural_abund, binding_energy=isotope.binding_energy,
                     atomic_mass=isotope.atomic_mass)
         a.save()
@@ -25,7 +25,7 @@ for isotope in nd.nuc_data:
 # ---------- Get unstable isotopes
 for isotope in nd.nuc_data:
     if type(isotope) is nd.Unstable:
-        a = Isotope(name=isotope.name, iso_type = 'U', z_number=isotope.Z, a_number=isotope.A,
+        a = Isotope(name=isotope.name, iso_type='U', z_number=isotope.Z, a_number=isotope.A,
                     natural_abund=isotope.natural_abund, binding_energy=isotope.binding_energy,
                     atomic_mass=isotope.atomic_mass)
         a.save()

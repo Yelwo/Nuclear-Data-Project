@@ -4,18 +4,18 @@ import django_tables2 as tables
 import math
 
 # ---------- Constants
-MASS_UNIT = 931.4940954 # MeV
-PROTON_MASS = 1.00727647 # u
-NEUTRON_MASS = 1.00866490 # u
-H = 4.135667662 # 10^(-15) * eV * s
-C = 299792458 # m/s
+MASS_UNIT = 931.4940954  # MeV
+PROTON_MASS = 1.00727647  # u
+NEUTRON_MASS = 1.00866490  # u
+H = 4.135667662  # 10^(-15) * eV * s
+C = 299792458  # m/s
 E_SQUARED = 1.4396
 E = 4.80296
 
 
 # ---------- Add two tuples
-def myAdd(x,y):
-    return tuple(map(sum,zip(x,y)))
+def my_add(x, y):
+    return tuple(map(sum, zip(x, y)))
 
 
 # ---------- Find garland occupation number
@@ -115,12 +115,12 @@ class Isotope(models.Model):
             i = self
             decay_sum = (0, 0)
             while i.iso_type != 'S':
-                decay_sum = myAdd(decay_sum, i.decay_mode())
+                decay_sum = my_add(decay_sum, i.decay_mode())
                 i = i.child
 
-            germ_sum = myAdd((i.germ[0], i.germ[1]), decay_sum)
+            germ_sum = my_add((i.germ[0], i.germ[1]), decay_sum)
             if (self.z_number - germ_sum[0]) % 2 != 0:
-                my_tuple = myAdd(germ_sum, (1, 0))
+                my_tuple = my_add(germ_sum, (1, 0))
             else:
                 my_tuple = germ_sum
 

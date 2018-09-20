@@ -5,17 +5,13 @@ from elementaryparticles.models import ElementaryParticle
 from radiations.models import Radiation
 from isotopes.models import Isotope
 
-"""
-Reaction.objects.all().delete()
-ReactionsField.objects.all().delete()
-"""
 
 reactions = data.reactions
   
 
 def check_if_there_are_many_objects(name, object_class):
     for element in object_class.objects.all().values_list('name', flat='True'):
-        m = re.fullmatch('[0-9]+' + element,name)
+        m = re.fullmatch('[0-9]+' + element, name)
         if m:
             return element, int(re.search('[0-9]+', name)[0])
 
@@ -57,19 +53,22 @@ def get_object(name):
                 print('Cant find %s in data base' % name)
 
 
-"""
-for index,react in reactions.iterrows():
-    Reaction.objects.create(
-    _target = get_object(react['Target']),
-    _projectile = get_object(react['Projectile']),
-    _product_one = get_object(react['Product_One']),
-    _product_two = get_object(react['Product_Two']),
-    _product_three = get_object(react['Product_Three'])
-    )
-    print('%s + %s -> %s + %s + %s' % (get_object(react['Target']),
-                                       get_object(react['Projectile']),
-                                       get_object(react['Product_One']),
-                                       get_object(react['Product_Two']),
-                                       get_object(react['Product_Three'])))
-"""
+if __name__ == '__main__':
+
+    Reaction.objects.all().delete()
+    ReactionsField.objects.all().delete()
+
+    for index, react in reactions.iterrows():
+        Reaction.objects.create(
+            _target=get_object(react['Target']),
+            _projectile=get_object(react['Projectile']),
+            _product_one=get_object(react['Product_One']),
+            _product_two=get_object(react['Product_Two']),
+            _product_three=get_object(react['Product_Three'])
+        )
+        print('%s + %s -> %s + %s + %s' % (get_object(react['Target']),
+                                           get_object(react['Projectile']),
+                                           get_object(react['Product_One']),
+                                           get_object(react['Product_Two']),
+                                           get_object(react['Product_Three'])))
 

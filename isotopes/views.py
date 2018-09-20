@@ -8,17 +8,24 @@ from .models import Isotope
 
 
 @login_required
-def addisotopes(request):
+def add_isotopes(request):
     form = AddIsotope(request.POST)
     if form.is_valid():
         isotope = form.save(commit=False)
         isotope.save()
-    return render(request, 'isotopes/addisotopes.html', {'form': form})
+    return render(request, 'isotopes/add_isotopes.html', {'form': form})
 
 
 class IsotopeListView(generic.ListView):
     model = Isotope
     paginate_by = 20
+
+    def get_queryset(self):
+        qs = Isotope.objects.all()
+        query = self.request.GET.get("q")
+        if query is not None:
+            qs = qs.filter(name__contains=query)
+        return qs
 
 
 class IsotopeDetailView(generic.DetailView):

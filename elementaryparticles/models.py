@@ -18,3 +18,5 @@ class ElementaryParticle(models.Model):
 
     def get_absolute_url(self):
         return reverse('elementaryparticles:elementary-particle-detail', args=[str(self.id)])
+
+

@@ -9,6 +9,10 @@
 
     {% if isotope_list %}
 
+    <form method="get" action="/isotopes/iso/">
+        <input type="text" name="q" placeholder="Search">
+    </form>
+
     <ul>
         {% for isotope in isotope_list %}
         <li>
@@ -17,13 +21,13 @@
         {% endfor %}
     </ul>
     {% else %}
-        <p>There are no isotopes in the library</p>
+        <p>There are no isotopes in the library</p>2
     {% endif %}
 
 {% if is_paginated %}
   <ul class="pagination">
     {% if page_obj.has_previous %}
-      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+      <li><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&laquo;</a></li>
     {% else %}
       <li class="disabled"><span>&laquo;</span></li>
     {% endif %}
@@ -31,11 +35,11 @@
       {% if page_obj.number == i %}
         <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
       {% else %}
-        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        <li><a href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
-      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+      <li><a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">&raquo;</a></li>
     {% else %}
       <li class="disabled"><span>&raquo;</span></li>
     {% endif %}
