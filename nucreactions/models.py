@@ -76,6 +76,26 @@ class Reaction(models.Model):
         return self._product_three.field_content
 
     @property
+    def print_target(self):
+        return self._target
+
+    @property
+    def print_projectile(self):
+        return self._projectile
+
+    @property
+    def print_product_one(self):
+        return self._product_one
+
+    @property
+    def print_product_two(self):
+        return self._product_two
+
+    @property
+    def print_product_three(self):
+        return self._product_three
+
+    @property
     def reaction_items(self):
         _reaction_items = []
         if self._projectile: _reaction_items.append(self._projectile)

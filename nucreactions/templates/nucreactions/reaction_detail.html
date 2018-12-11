@@ -3,14 +3,14 @@
   <h1>Name: {{ reaction }}</h1>
 
 
-  <p><strong>Target:</strong> <a href="{{ reaction.target.get_absolute_url }}">{{ reaction.target.name }}</a></p>
+  <p><strong>Target:</strong> <a href="{{ reaction.target.get_absolute_url }}">{{ reaction.print_target }}</a></p>
   {% if reaction.projectile is not None %}
-  <p><strong>Projectile:</strong> <a href="{{ reaction.projectile.get_absolute_url }}">{{ reaction.projectile.name }}</a></p>
+  <p><strong>Projectile:</strong> <a href="{{ reaction.projectile.get_absolute_url }}">{{ reaction.print_projectile }}</a></p>
   {% endif %}
-  <p><strong>First product:</strong> <a href="{{ reaction.product_one.get_absolute_url }}">{{ reaction.product_one.name }}</a></p>
-  <p><strong>Second product:</strong> <a href="{{ reaction.product_two.get_absolute_url }}">{{ reaction.product_two.name }}</a></p>
+  <p><strong>First product:</strong> <a href="{{ reaction.product_one.get_absolute_url }}">{{ reaction.print_product_one }}</a></p>
+  <p><strong>Second product:</strong> <a href="{{ reaction.product_two.get_absolute_url }}">{{ reaction.print_product_two }}</a></p>
   {% if reaction.product_three is not None %}
-    <p><strong>Third product:</strong> <a href="{{ reaction.product_three.get_absolute_url }}">{{ reaction.product_three.name }}</a></p>
+    <p><strong>Third product:</strong> <a href="{{ reaction.product_three.get_absolute_url }}">{{ reaction.print_product_three }}</a></p>
   {% endif %}
 
   {% if reaction.reaction_view is not None %}

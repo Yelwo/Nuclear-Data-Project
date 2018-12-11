@@ -6,7 +6,8 @@ from pyne import nucname
 
 # ---------- Add two tuples
 def myAdd(x,y):
-    return tuple(map(sum,zip(x,y)))
+    return tuple(map(sum, zip(x, y)))
+
 
 # ---------- Constants
 mass_unit = 931.4940954
@@ -16,12 +17,14 @@ neutron_mass = 1.00866490
 # ---------- List of isotope names
 isotopes = []
 
-for i in range(1,115):
-    for j in range(1,250):
+
+for i in range(1, 115):
+    for j in range(1, 250):
         try:
             isotopes.append(nucname.name((i*1000 + j)*(10**4)))
-        except (RuntimeError):
+        except RuntimeError:
             pass
+
 
 # ---------- Calculate binding energy of isotope
 def calc_binding_energy(isotope):
@@ -32,21 +35,21 @@ def calc_binding_energy(isotope):
 
 
 # ---------- Find isotope by Z number
-def match_z_isotope(isotope,z):
-    if(nucname.znum(isotope) == z):
+def match_z_isotope(isotope, z):
+    if nucname.znum(isotope) == z:
         return True
     else:
         return False
 
 
-def iso(isotopes,z):
-    result = [isotope for isotope in isotopes if match_z_isotope(isotope,z)]
+def iso(isotopes, z):
+    result = [isotope for isotope in isotopes if match_z_isotope(isotope, z)]
     return result
 
 
 # ---------- Filter existing isotopes
 isotopes_up = list(filter(lambda isotope: (len(data.decay_children(isotope))>0 or
-                          data.natural_abund(isotope)>0),isotopes))
+                          data.natural_abund(isotope)>0), isotopes))
 
 
 # ---------- Get dict of children
@@ -87,7 +90,7 @@ class Iso_data:
     # Return single step of decay chain
     def decay_mode(self):
         if(type(self.child()) is int):
-            return (0,0)
+            return 0, 0
         x = self.child()
         if(x.Z < self.Z):
             if(x.A == self.A - 4):
