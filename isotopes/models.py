@@ -43,7 +43,7 @@ class NucStructureTable(tables.Table):
 
 class NucShellSizesTable(tables.Table):
     shell_number = tables.Column()
-    shell_radius = tables.Column()
+    shell_radius = tables.Column('Shell radius [E-13 cm]')
 
     class Meta:
         template_name = 'django_tables2/bootstrap-responsive.html'
@@ -51,7 +51,7 @@ class NucShellSizesTable(tables.Table):
 
 class NucShellEnergyTable(tables.Table):
     shell_number = tables.Column()
-    binding_energy = tables.Column()
+    binding_energy = tables.Column(verbose_name='Binding energy[MeV]')
 
     class Meta:
         template_name = 'django_tables2/bootstrap-responsive.html'
@@ -59,7 +59,7 @@ class NucShellEnergyTable(tables.Table):
 
 class NucShellDipoleMomentTable(tables.Table):
     shell_number = tables.Column()
-    dipole_moment = tables.Column()
+    dipole_moment = tables.Column(verbose_name='Dipole moment[D]')
 
     class Meta:
         template_name = 'django_tables2/bootstrap-responsive.html'
@@ -82,6 +82,10 @@ class Isotope(models.Model):
     )
 
     iso_type = models.CharField(max_length=1, choices=ISO_TYPES, null=True)
+
+    @property
+    def atomic_mass_in_mev(self):
+        return self.atomic_mass * 935.5
 
     # ---------- Calculate single step of decay chain
     def decay_mode(self):
@@ -274,7 +278,7 @@ class Isotope(models.Model):
         table = []
 
         for i, shell in enumerate(shell_sizes):
-            table.append({'shell_number': i + 1, 'shell_radius' : format(shell, '.5g')})
+            table.append({'shell_number': i + 1, 'shell_radius': format(shell, '.5g')})
 
         return NucShellSizesTable(table)
 

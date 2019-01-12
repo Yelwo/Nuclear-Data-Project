@@ -7,7 +7,7 @@
   <p><strong>Mass number:</strong> {{ isotope.a_number }}</p>
   <p><strong>Natural abundance:</strong> {{ isotope.natural_abund }}</p>
   <p><strong>Binding energy:</strong> {{ isotope.binding_energy }} MeV</p>
-  <p><strong>Atomic mass:</strong> {{ isotope.atomic_mass }} u</p>
+  <p><strong>Atomic mass:</strong> {{ isotope.atomic_mass }} u ({{isotope.atomic_mass_in_mev}} MeV/c^2)</p>
   <p><strong>Type:</strong> {{ isotope.iso_type }}</p>
   <p><strong>Nuclear size:</strong> {{ isotope.nuc_size }} cm</p>
   {% if isotope.iso_type == 'U' %}
@@ -21,10 +21,10 @@
   <div class = "col-md-2">
     {% render_table isotope.nuc_structure_table %}
   </div>
-  <div class = "col-md-2">
+  <div class = "col-md-3">
     {% render_table isotope.nuc_shell_sizes_table %}
   </div>
-  <div class = "col-md-2">
+  <div class = "col-md-3">
     {% render_table isotope.nuc_shell_binding_energy_table %}
   </div>
   <div class = "col-md-2">
